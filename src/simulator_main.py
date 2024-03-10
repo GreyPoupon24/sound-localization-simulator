@@ -44,8 +44,8 @@ if __name__ == "__main__":
                         help="The level of verbosity with which the simulator will dump logging information")
     parser.add_argument('-f', '--logfile_name', type=str,
                         help="The log file name used for the simulation run. If not passed, the experiment name is used")
-    # parser.add_argument('-i', '--input_type', default='simulation', type=str,
-    #                     help="Specify the type of input source for the hydrophone data: \nThe Options are:\nglobal_vars.InputSource.simulation\nglobal_vars.InputSource.csv\nglobal_vars.InputSource.shared_memory\nglobal_vars.InputSource.socket")
+    parser.add_argument('-i', '--input_type', default='simulation', type=str,
+                        help="Specify the type of input source for the hydrophone data: \nThe Options are:\nglobal_vars.InputSource.simulation\nglobal_vars.InputSource.csv\nglobal_vars.InputSource.shared_memory\nglobal_vars.InputSource.socket")
     parser.add_argument('-csv','--csv_filepath', type=str,
                         help="The file name for csv containing hydrophone data to use")
 
@@ -96,56 +96,27 @@ if __name__ == "__main__":
     # experiment = Experiment_class.load()  # type: Experiment
     # if experiment is None:
 
-    
-    # experiment = Experiment_class(radiusPinger=(25), radiusGuess=(25))
+    # ///////////////////////////////////////////////////////////
+    # Primary Experiment, Runs Once, Prints Graphic showing results
+    # /////////////////////////////////////////////////////////////
+    experiment = Experiment_class(pingerRadius=(25), pingerAngle=(np.pi/180*50), guessRadius=(10))
+    results = experiment.apply()
+    experiment.display_results()
+    experiment.dump()
 
-    # # Run
-    # results = experiment.apply()
-    # experiment.display_results()
-
-    # experiment.dump()
-
-    # for pinger_radius in [0.11, 0.5, 1, 3]:
-    #     for pinger_angle in [np.pi/5, np.pi/3, 3*np.pi/4]:
-    #         for guess_radius in [0.1, 0.51, 1.4, 2]:
+    # # ////////////////////////////////////////////////////////////////////////////////////////////
+    # # Test used for Determining Average Error throughout a range of pinger radii and pinger angles
+    # # ////////////////////////////////////////////////////////////////////////////////////////////
+    # for pinger_radius in random.sample(range(1, 80), 8):
+    #     for pinger_angle in random.sample(range(0, 180), 5):
             
-    #             experiment = Experiment_class(pingerRadius=(pinger_radius), pingerAngle=(pinger_angle), guessRadius=(guess_radius))
+    #         experiment = Experiment_class(pingerRadius=(pinger_radius), pingerAngle=(np.pi/180*pinger_angle), guessRadius=(10))
 
-    #             # Run
-    #             results = experiment.apply()
-    #             #experiment.display_results()
+    #         # Run
+    #         results = experiment.apply()
+    #         #experiment.display_results()
 
-    #             experiment.dump()
-    #         print("")
+    #         experiment.dump()
     #     print("")
     # print("")
-            
-    # for pinger_radius in [60]:
-    #     for pinger_angle in [3*np.pi/4]:
-    #         for guess_radius in [49,51]:
-            
-    #             experiment = Experiment_class(pingerRadius=(pinger_radius), pingerAngle=(pinger_angle), guessRadius=(guess_radius))
-
-    #             # Run
-    #             results = experiment.apply()
-    #             #experiment.display_results()
-
-    #             experiment.dump()
-    #         print("")
-    #     print("")
-    # print("")
-
-    for pinger_radius in random.sample(range(1, 80), 8):
-        for pinger_angle in random.sample(range(0, 100), 5):
-            
-            experiment = Experiment_class(pingerRadius=(pinger_radius), pingerAngle=(np.pi/100*pinger_angle), guessRadius=(10))
-
-            # Run
-            results = experiment.apply()
-            #experiment.display_results()
-
-            experiment.dump()
-        print("")
-    print("")
-
-    print("Average Error = " + str(sum(global_vars.error_list)/len(global_vars.error_list)) + "%")
+    # print("Average Error = " + str(sum(global_vars.error_list)/len(global_vars.error_list)) + "%")
