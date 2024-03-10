@@ -59,6 +59,8 @@ class DefaultExp(Experiment):
             self.simulation_chain.add_component(
                 GaussianNoise(mu=0, sigma=self.sigma)
             )
+
+            # Adds phase shift error to cross correlation stage, remove to default back to 0 error
             global_vars.phase_shift_error = 2.5
             print("Adding a randomized phase-shift-error to each hydrophone of plus/minus " + str(global_vars.phase_shift_error) + " degrees")
 

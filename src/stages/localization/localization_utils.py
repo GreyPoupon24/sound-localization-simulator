@@ -164,7 +164,6 @@ def angle_nls(func, args=(), radius=10, resolution = 1000):
 
     #BIG NOTE TO SELF, A 3D GRAPH OF THE SQUARED ERROR WOULD GO HARD AND SO WOULD WATCHING THE ALGORITHIM'S PATH ON SAID GRAPH
     #NOW THAT YOU GOT A GRADIENT SAMPLING SCRIPT, THIS IS THE NEXT BIG VISUALIZATION TOOL
-    #params = starting_params
     params=np.zeros(2)
 
     minMinError = 1e6
@@ -196,14 +195,10 @@ def angle_nls(func, args=(), radius=10, resolution = 1000):
                 phi = np.pi*float(i)/float(resolution)
                 minError = squareErrorList[i]
         
-        #print("minError = " + str(minError) + "  Phi = " + str(phi) + " rads,   " + str(phi*180/(np.pi))+ " degrees")
-
         #testing stuff
         pinger = global_vars.pinger_position.phi*180/np.pi
         pingerdistance = global_vars.pinger_position.r
         phi1 = phi*180/(np.pi)
-
-        #print("Pinger Distance = " + str(pingerdistance)  +" meters, Pinger Angle = " + str(pinger) + " degrees,  Guess Distance = " + str(radius) + " meters,   Angle Error: " + str(100*abs(pinger-phi1)/180)+ "% Min NLS Error: " + str(minError))
         
         if(minError < minMinError):
             minMinError = minError
@@ -220,6 +215,7 @@ def angle_nls(func, args=(), radius=10, resolution = 1000):
 
     global_vars.error_list.append(error)
 
+    # TODO: Add a DEBUG parameter that toggles print statements like this on or off (or use a proper logger)
     print("Pinger Distance = " + str(pingerdistance)  +" meters, Pinger Angle = " + str(pinger) + " degrees, Calculated Angle: " + str(bestPhi * 180/np.pi) + " degrees, Angle Error: " + str(error)+ "%")
     
     return params
@@ -239,7 +235,6 @@ def get_grad(func, params, args, delta_x):
     @return         A numpy array containg the gradient of the function
 
     '''
-    #print(params)
     return np.array([get_partial_derivative(func, params, args, i, delta_x)
                     for i in range(len(params))])
 
@@ -268,9 +263,7 @@ def gradient_sampling(func, params, args,delta_x,radius,num_samples,print_all):
     '''
 
     #add functionality to specify the angular and radial density of gradinet sampling as well as the radius size?
-    
- 
-  
+
     loop_iterations=floor(np.sqrt(num_samples))
 
     #angle loop run from 0 to 2pi and radius loop run up to the radius needed with floor(sqrt(num_samples)) for each
